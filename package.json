@@ -1,0 +1,27 @@
+{
+  "name": "discord.js-v14-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/voice": "^0.17.0",
+    "discord-player": "^6.7.1",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "ffmpeg-static": "^5.2.0",
+    "ffmpeggy": "^3.0.1",
+    "fs": "0.0.1-security",
+    "libsodium-wrappers": "^0.7.14",
+    "ollama": "^0.5.6",
+    "play-dl": "^1.9.7",
+    "scdl-core": "^1.1.0",
+    "ytdl-core": "^4.11.5"
+  }
+}
