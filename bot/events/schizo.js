@@ -1,6 +1,7 @@
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, getVoiceConnection } from '@discordjs/voice';
 import fs from 'fs';
 import path from 'path';
+import { setTimeout } from 'timers/promises';
 
 const SOUNDS_FOLDER = './resources/sounds';
 const MIN_IDLE_TIME = 60000;
@@ -15,14 +16,16 @@ export default {
         // checks if the person who joined the channel isnt Goro itself
         if (channel && !newState.member.user.bot) {
             let connection = getVoiceConnection(newState.guild.id);
-            
-            // connects to VC
+            const idleTime = Math.floor(Math.random() * (MAX_IDLE_TIME - MIN_IDLE_TIME + 1) + MIN_IDLE_TIME);
+            // waits a bit and then connects to a VC
             if (!connection) {
-                connection = joinVoiceChannel({
-                    channelId: channel.id,
-                    guildId: newState.guild.id,
-                    adapterCreator: newState.guild.voiceAdapterCreator,
-                });
+                setTimeout(() => {
+                    connection = joinVoiceChannel({
+                        channelId: channel.id,
+                        guildId: newState.guild.id,
+                        adapterCreator: newState.guild.voiceAdapterCreator,
+                    }); 
+                }, idleTime);  
             }
 
             // start playing sounds only if there are more than one user in the channel
@@ -32,7 +35,7 @@ export default {
             }
         }
 
-        // makes the bot leave duh
+        // makes the bot leave
         if (oldState.channel && oldState.channel.members.size === 1 && oldState.channel.members.has(newState.guild.members.me.id)) {
             const connection = getVoiceConnection(oldState.guild.id);
             if (connection) {
@@ -42,7 +45,7 @@ export default {
     },
 };
 
-// does the time calculation and puts the time left in the log (might remove it when this feature doesnt need any new changes)
+// does the time calculation and puts the time left in the log
 async function playSounds(connection, channel) {
     while (channel.members.size > 1) {
         const idleTime = Math.floor(Math.random() * (MAX_IDLE_TIME - MIN_IDLE_TIME + 1) + MIN_IDLE_TIME);
@@ -62,7 +65,7 @@ async function playSounds(connection, channel) {
     connection.destroy();
 }
 
-// currently only .mp3 support
+// won't bother adding any other support because mp3 superiority 
 function playRandomSound(connection) {
     const soundFiles = fs.readdirSync(SOUNDS_FOLDER).filter(file => file.endsWith('.mp3'));
     if (soundFiles.length === 0) {
@@ -70,7 +73,7 @@ function playRandomSound(connection) {
         return;
     }
 
-    // select a random sound and plays it
+    // selects a random sound and plays it
     const soundFile = soundFiles[Math.floor(Math.random() * soundFiles.length)];
     console.log(`Playing sound: ${soundFile}`);
     const resource = createAudioResource(path.join(SOUNDS_FOLDER, soundFile));
