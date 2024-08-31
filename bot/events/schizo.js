@@ -16,16 +16,14 @@ export default {
         // checks if the person who joined the channel isnt Goro itself
         if (channel && !newState.member.user.bot) {
             let connection = getVoiceConnection(newState.guild.id);
-            const idleTime = Math.floor(Math.random() * (MAX_IDLE_TIME - MIN_IDLE_TIME + 1) + MIN_IDLE_TIME);
-            // waits a bit and then connects to a VC
+            
+            // connects to a VC
             if (!connection) {
-                setTimeout(() => {
-                    connection = joinVoiceChannel({
-                        channelId: channel.id,
-                        guildId: newState.guild.id,
-                        adapterCreator: newState.guild.voiceAdapterCreator,
-                    }); 
-                }, idleTime);  
+                connection = joinVoiceChannel({
+                    channelId: channel.id,
+                    guildId: newState.guild.id,
+                    adapterCreator: newState.guild.voiceAdapterCreator,
+                }); 
             }
 
             // start playing sounds only if there are more than one user in the channel
