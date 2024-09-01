@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, VoiceConnectionStatus } from '@discordjs/voice';
 import { SoundCloud } from "scdl-core";
-import { ytdl } from '@distube/ytdl-core';
-import { fetch } from 'node-fetch';
-import { fs } from 'fs';
+import ytdl from '@distube/ytdl-core';
+import fetch from 'node-fetch';
+import fs from 'fs';
 
 export default {
   name: "playsound",
