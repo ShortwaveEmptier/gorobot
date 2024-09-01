@@ -14,21 +14,22 @@ export default {
           type: ActivityType.Custom});
         break;
       case 1:
-        client.user.setActivity("https://youtu.be/tCng3Wu6Zo0", {
-          type: ActivityType.Listening});
-        break;        
+        client.user.setActivity(":3", {
+          type: ActivityType.Custom});
+        break;       
       case 2:
-        client.user.setActivity("http://gg.gg/camdudes-com", {
-          type: ActivityType.Streaming});
+        client.user.setActivity("Wasting bandwidth", {
+          type: ActivityType.Custom});
         break;
       case 3:
-        client.user.setActivity("https://youtu.be/RvgHv6PM61U", {
-          type: ActivityType.Listening});
+        client.user.setActivity("Movie 📸", {
+          type: ActivityType.Custom});
         break;
       case 4:
-        client.user.setActivity("https://youtu.be/-bn9Pykr2BM", {
-          type: ActivityType.Listening});
-        break;
+        client.user.setActivity("on camdudes.com", {
+          type: ActivityType.Streaming,
+          url: "https://www.twitch.tv/trymacs" 
+      });
       default:
         break;
     }
