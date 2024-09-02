@@ -2,6 +2,7 @@ import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerSt
 import fs from 'fs';
 import path from 'path';
 import { setTimeout } from 'timers/promises';
+import emitter from "../../resources/emitters/sharedEmitter.js";
 
 const SOUNDS_FOLDER = './resources/sounds';
 const MIN_IDLE_TIME = 60000;
@@ -29,9 +30,17 @@ export default {
             // start playing sounds only if there are more than one user in the channel
             if (!connection.playing && channel.members.size > 1) {
                 connection.playing = true;
+            // stops the playback of random sounds
+            emitter.once('musicStarted', () => {
+                console.log('Music started, not playing random sounds now.');
+            });
+            // continues the playback of random sounds when the music playback stops
+            emitter.once('musicStopped', () => {
+                console.log('Music stopped, resuming random sounds.');
                 playSounds(connection, channel);
-            }
+            });
         }
+
 
         // makes the bot leave
         if (oldState.channel && oldState.channel.members.size === 1 && oldState.channel.members.has(newState.guild.members.me.id)) {
@@ -40,8 +49,10 @@ export default {
                 connection.destroy();
             }
         }
+    }
     },
 };
+
 
 // does the time calculation and puts the time left in the log
 async function playSounds(connection, channel) {

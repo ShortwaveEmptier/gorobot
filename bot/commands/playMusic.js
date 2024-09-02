@@ -1,14 +1,14 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, VoiceConnectionStatus } from '@discordjs/voice';
+import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, VoiceConnectionStatus } from "@discordjs/voice";
 import { SoundCloud } from "scdl-core";
-import ytdl from '@distube/ytdl-core';
-import fetch from 'node-fetch';
-import fs from 'fs';
+import ytdl from "@distube/ytdl-core";
+import fetch from "node-fetch";
+import fs from "fs";
+import emitter from "../../resources/emitters/sharedEmitter.js";
 
 export default {
   name: "playsound",
   description: "Plays sounds/music via direct link, SoundCloud, or YouTube.",
-  devOnly: true,
   options: [
     {
       name: "link",
@@ -53,10 +53,10 @@ export default {
         let format;
         while (retries > 0) {
           try {
-            // Fetch video info
+            // fetch video info
             const info = await ytdl.getInfo(link, { agent });
 
-            // Choose the best audio format
+            // choose the best audio format
             const formats = info.formats.filter(f => f.audioCodec);
             if (formats.length === 0) {
               throw new Error('No suitable audio format found.');
@@ -67,17 +67,17 @@ export default {
             });
 
             stream = ytdl.downloadFromInfo(info, { format, agent });
-            break; // Exit loop if successful
+            break; // exit loop if successful
           } catch (error) {
             console.error(`Attempt failed with error: ${error.message}`);
             retries--;
-            if (retries === 0) throw error; // Rethrow error if out of retries
+            if (retries === 0) throw error; // rethrow error if out of retries
             console.log('Retrying...');
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Wait before retrying
+            await new Promise(resolve => setTimeout(resolve, 2000)); // wait before retrying
           }
         }
       } else if (link.endsWith('.mp3') || link.endsWith('.wav') || link.endsWith('.ogg') || link.endsWith('.flac') || link.endsWith('.mp4') || link.endsWith('.webm')) {
-        // Direct link handling with various formats
+        // direct link handling with various formats
         const response = await fetch(link);
         if (!response.ok) throw new Error(`Failed to fetch audio file: ${response.statusText}`);
         stream = response.body;
@@ -88,6 +88,7 @@ export default {
         });
       }
 
+      emitter.emit('musicStarted'); // signal that music has started
       const resource = createAudioResource(stream);
       const player = createAudioPlayer();
 
@@ -96,17 +97,19 @@ export default {
 
       await interaction.editReply({ content: `Now playing: **${link}**` });
 
-      player.on(AudioPlayerStatus.Idle, () => {
-        connection.destroy();
+      // handle player events
+      player.once(AudioPlayerStatus.Idle, () => {
+        emitter.emit('musicStopped'); // signal that music has stopped
       });
 
-      connection.on(VoiceConnectionStatus.Disconnected, () => {
-        connection.destroy();
+      // handle connection events
+      connection.once(VoiceConnectionStatus.Disconnected, () => {
+        emitter.emit('musicStopped'); // signal that music has stopped
       });
 
     } catch (error) {
       console.error('Audio playback error:', error);
-      connection.destroy();
+      emitter.emit('musicStopped'); // signal that music has stopped on error
 
       return interaction.editReply({
         content: "There was an error trying to play this track.",

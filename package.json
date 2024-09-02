@@ -18,6 +18,7 @@
     "discord-player": "^6.7.1",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
+    "events": "^3.3.0",
     "ffmpeg-static": "^5.2.0",
     "ffmpeggy": "^3.0.1",
     "fs": "0.0.1-security",
