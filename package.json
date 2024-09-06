@@ -25,6 +25,7 @@
     "libsodium-wrappers": "^0.7.14",
     "ollama": "^0.5.6",
     "play-dl": "^1.9.7",
+    "sc-play": "^1.0.5",
     "scdl-core": "^1.1.0",
     "socks-proxy-agent": "^8.0.4",
     "ytdl-core": "^4.11.5"
