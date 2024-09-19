@@ -149,7 +149,6 @@ async function playRandomSound(connection) {
     connection.subscribe(player);
 
     player.on(AudioPlayerStatus.Idle, () => {
-        console.log('Playback finished.');
         player.stop();
     });
 

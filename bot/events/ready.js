@@ -1,4 +1,5 @@
 import { ActivityType } from "discord.js";
+import randomEventCreator from './randomEvents.js';
 
 export default {
   name: "ready",
@@ -7,6 +8,7 @@ export default {
   execute(client) {
     console.log(`✅ ${client.user.tag} is online.\n`);
     const randomIndex = Math.floor(Math.random() * 5);
+    randomEventCreator.execute();
 
     switch (randomIndex) {
       case 0:

@@ -4,7 +4,7 @@ dotenv.config();
 
 export default {
   name: "ready",
-  once: true,
+  once: false,
 
   async execute(client) {
     async function nameChanger() {
@@ -32,7 +32,7 @@ export default {
             }
           }
         });
-        console.log('Nicknames changed !!\n');
+        console.log('✅ Nicknames changed !!\n');
       } catch (error) {
         console.error('Error fetching members or updating nicknames: ', error);
       }
