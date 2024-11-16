@@ -14,7 +14,7 @@
     "@discordjs/voice": "^0.17.0",
     "@distube/ytdl-core": "^4.14.4",
     "axios": "^1.7.7",
-    "cookie": "^0.6.0",
+    "cookie": "^1.0.1",
     "discord-player": "^6.7.1",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
@@ -26,7 +26,6 @@
     "ollama": "^0.5.6",
     "play-dl": "^1.9.7",
     "sc-play": "^1.0.5",
-    "scdl-core": "^1.1.0",
     "socks-proxy-agent": "^8.0.4",
     "ytdl-core": "^4.11.5"
   },
