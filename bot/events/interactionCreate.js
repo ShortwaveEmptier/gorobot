@@ -36,9 +36,7 @@ export default {
 
             if (cooldowns.has(commandName)) {
                 const expirationTime = cooldowns.get(commandName) + cooldownAmount;
-
                 const timeLeft = expirationTime - now;
-
                 const formattedTimeLeft = (timeLeft / 1000).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
                 if (now < expirationTime) {
@@ -48,9 +46,8 @@ export default {
                     });
                 }
             }
-
+            
             cooldowns.set(commandName, now);
-
             setTimeout(() => cooldowns.delete(commandName), cooldownAmount);
         }
 

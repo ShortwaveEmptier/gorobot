@@ -1,7 +1,7 @@
-import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, getVoiceConnection } from '@discordjs/voice';
 import fs from 'fs';
 import path from 'path';
 import { setTimeout } from 'timers/promises';
+import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, getVoiceConnection } from '@discordjs/voice';
 
 const SOUNDS_FOLDER = './resources/sounds';
 const MIN_IDLE_TIME = 300000;   // 5 minutes
@@ -72,7 +72,7 @@ async function joinChannelAndPlay(channel) {
         await setTimeout(500); // 500ms to allow the bot to fully join and members to update
         await playSounds(connection, channel);
     } catch (error) {
-        console.error('Failed to join channel:', error); 
+        console.error('❌ Failed to join channel:', error); 
     }
 }
 
@@ -88,7 +88,7 @@ async function playSounds(connection, channel) {
         const idleTime = Math.floor(Math.random() * (MAX_IDLE_TIME - MIN_IDLE_TIME + 1)) + MIN_IDLE_TIME;
         const minutes = Math.floor(idleTime / 60000);
         const seconds = Math.floor((idleTime % 60000) / 1000);
-        console.log(`Time until next sound: ${minutes}m ${seconds}s`);
+        console.log('⏳ Time until next sound: ${minutes}m ${seconds}s');
 
         await setTimeout(idleTime);
 
@@ -107,7 +107,7 @@ async function playSounds(connection, channel) {
 async function playRandomSound(connection) {
     const soundFiles = fs.readdirSync(SOUNDS_FOLDER).filter(file => file.endsWith('.mp3'));
     if (soundFiles.length === 0) {
-        console.log('No sound files found.');
+        console.log('❌ No sound files found.');
         return;
     }
 
@@ -121,5 +121,5 @@ async function playRandomSound(connection) {
     connection.subscribe(player);
 
     player.on(AudioPlayerStatus.Idle, () => player.stop());
-    player.on('error', (error) => console.error('Error playing sound:', error));
+    player.on('error', (error) => console.error('❌ Error playing sound:', error));
 }

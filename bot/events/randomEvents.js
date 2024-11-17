@@ -22,7 +22,7 @@ export default {
         function getRandomImage() {
             const imageFiles = fs.readdirSync(IMAGES_FOLDER);
             if (imageFiles.length === 0) {
-                console.log('No image files found.');
+                console.log('❌ No image files found.');
                 return null;
             }
 
@@ -126,7 +126,7 @@ export default {
         }        
 
         async function createEventInChannel() {
-            const voiceChannelIds = ['1265695483788001466', '1265700302276001845'];
+            const voiceChannelIds = ['1265695483788001466', '1265700302276001845']; // hard coded please replace
             const voiceChannelId = voiceChannelIds[Math.floor(Math.random() * voiceChannelIds.length)]; // chooses between the two voicechats
             const { day, time } = getRandomWeekdayTime();
             const title = generateMarkovTitle();
@@ -134,7 +134,7 @@ export default {
             const image = getRandomImage();
         
             if (!image) { // image error handling
-                console.error('Failed to find a suitable image for the event!');
+                console.error('❌ Failed to find a suitable image for the event!');
                 return;
             }
         
@@ -153,9 +153,9 @@ export default {
                     description,
                     image: image
                 }, image ? { files: [{ attachment: image, name: path.basename(image) }] } : {});
-                console.log(`Event "${title}" created in voice channel "${voiceChannelId}" on ${startDate}`);
+                console.log('✅ Event "${title}" created in voice channel "${voiceChannelId}" on ${startDate}');
             } catch (error) {
-                console.error('Failed to create event in voice channel:', error);
+                console.error('❌ Failed to create event in voice channel:', error);
             }
         }
 
@@ -168,17 +168,17 @@ export default {
             const initialDelay = getNextEventDelay(targetWeekday, targetHour);
             
             if (initialDelay <= 0) {
-                console.warn('Initial delay is non-positive. Adjusting to a valid delay.');
+                console.warn('⏳ Initial delay is non-positive. Adjusting to a valid delay.');
             }
             
             const upcomingEventDate = new Date(Date.now() + initialDelay);
             console.log(`📅 Next event is scheduled for: ${upcomingEventDate.toLocaleString()}`);
             
             setTimeout(() => {
-                console.log('Timeout reached, creating event.');
+                console.log('✅ Timeout reached, creating event.');
                 createEventInChannel();
                 setInterval(() => {
-                    console.log('Interval reached, creating weekly event.');
+                    console.log('✅ Interval reached, creating weekly event.');
                     createEventInChannel();
                 }, 7 * 24 * 60 * 60 * 1000);
             }, initialDelay);                       

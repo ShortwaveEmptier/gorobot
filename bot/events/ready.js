@@ -6,7 +6,7 @@ export default {
   once: true,
 
   execute(client) {
-    console.log(`✅ ${client.user.tag} is online.\n`);
+    console.log('✅ ${client.user.tag} is online.');
     const randomIndex = Math.floor(Math.random() * 5);
     randomEventCreator.execute();
 
